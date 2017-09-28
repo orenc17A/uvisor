@@ -158,3 +158,6 @@ During a context switch, the uVisor stores the state of the previous context and
 - Hands the execution to the target context.
 
 A context switch is triggered automatically every time the target of a function call or exception handling routine (interrupts) belongs to a different secure domain. This applies to user interrupt service routines, threads and direct function calls.
+
+
+
