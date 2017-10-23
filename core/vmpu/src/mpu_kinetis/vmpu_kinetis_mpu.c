@@ -38,18 +38,20 @@
  * .---------.
  * |   11    |
  * |   ...   |
- * |    5    | <-- Box Pages, K64F_MPU_REGIONS_USER
+ * |    8    | <-- Box Pages, K64F_MPU_REGIONS_USER
  * +---------+
- * |    4    | <-- Box Context
- * |    3    | <-- Box Stack, K64F_MPU_REGIONS_STATIC
+ * |    7    | <-- Box Context
+ * |    6    | <-- Box Stack, K64F_MPU_REGIONS_STATIC
  * +---------+
- * |    2    | <-- Application SRAM unlock
- * |    1    | <-- Application Flash unlock
- * |    0    | <-- Background region
+ * |    5    | <-- Application SRAM unlock
+ * |    4    | <-- Application Flash unlock
+ * |    3    | <-- Background region (stack start to 0xFFFFFFFF)
+ * |    2    | <-- Background region (0 to stack guard)
+ * |    1    | <-- Background region (for debugger)
  * '---------'
  */
-#define K64F_MPU_REGIONS_STATIC 3
-#define K64F_MPU_REGIONS_USER 5
+#define K64F_MPU_REGIONS_STATIC 5
+#define K64F_MPU_REGIONS_USER 7
 #define K64F_MPU_REGIONS_MAX 12
 
 typedef struct

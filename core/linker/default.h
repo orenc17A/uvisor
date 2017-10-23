@@ -197,6 +197,11 @@ SECTIONS
         __uvisor_stack_start_boundary__ = .;
         . += STACK_GUARD_BAND;
 #endif
+#ifdef ARCH_MPU_KINETIS
+    . = ALIGN(32);
+    __uvisor_stack_start_boundary__ = .;
+    . += STACK_GUARD_BAND;
+#endif
         __uvisor_stack_start__ = .;
         . += STACK_SIZE;
         __uvisor_stack_top__ = .;
