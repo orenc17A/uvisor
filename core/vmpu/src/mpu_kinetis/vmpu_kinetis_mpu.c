@@ -389,8 +389,25 @@ void vmpu_mpu_init(void)
                   (SCB_SHCSR_MEMFAULTENA_Msk);
 }
 
+void vmpu_mpu_set_background_region()
+{
+    MPU_Region * mpu_region = NULL;
+
+    mpu_region = (MPU_Region *) MPU->WORD[1];
+    mpu_region->STARTADDR = 0x00000000;
+    mpu_region->ENDADDR = (((uint32_t) &__uvisor_stack_start_boundary__) - 1);
+    mpu_region->PERMISSIONS = UVISOR_TACL_CORE_BACKGROUND;
+    mpu_region->CONTROL = 1;
+
+    mpu_region = (MPU_Region *) MPU->WORD[2];
+    mpu_region->STARTADDR = ((uint32_t) &__uvisor_stack_start__);
+    mpu_region->ENDADDR = 0xFFFFFFFF;
+    mpu_region->PERMISSIONS = UVISOR_TACL_CORE_BACKGROUND;
+    mpu_region->CONTROL = 1;
+}
 void vmpu_mpu_lock(void)
 {
+    vmpu_mpu_set_background_region();
     /* DMB to ensure MPU update after all transfer to memory completed */
     __DMB();
 

@@ -70,16 +70,6 @@ void vmpu_mem_init(void)
     static const uint32_t MPU_RGDn_WORD2_M2UM_READ = (1 << 14);
     static const uint32_t MPU_RGDn_WORD2_M2UM_WRITE = (1 << 13);
 
-
-    // describes the background region without the STACK_GUARD_BAND
-    vmpu_mpu_set_static_acl(1, 0x00000000, (uint32_t) &__uvisor_stack_start_boundary__,
-        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_CORE_BACKGROUND);
-
-    vmpu_mpu_set_static_acl(2, (uint32_t) &__uvisor_stack_start__, 0xFFFFFFFF - ((uint32_t) &__uvisor_stack_start__),
-        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_CORE_BACKGROUND);
-
-
-
     /* enable read access to unsecure flash regions
      * - allow execution
      * - give read access to ENET DMA bus master and generic (UART, I2C, etc.)
