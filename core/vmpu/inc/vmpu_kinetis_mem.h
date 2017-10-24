@@ -31,7 +31,8 @@
  *    | 4 | usb        | NA         | -     |
  *    | 5 | core       | NA         | -     |
  */
-#define UVISOR_TACL_BACKGROUND 0x000007D0U
+#define UVISOR_TACL_DEBUGGER_BACKGROUND 0x000001D8U
+#define UVISOR_TACL_CORE_BACKGROUND 0x000001D0U
 
 extern int vmpu_mem_add(uint8_t box_id, void* start, uint32_t size, UvisorBoxAcl acl);
 extern void vmpu_mem_switch(uint8_t src_box, uint8_t dst_box);

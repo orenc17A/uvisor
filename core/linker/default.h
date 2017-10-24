@@ -205,7 +205,9 @@ SECTIONS
         __uvisor_stack_start__ = .;
         . += STACK_SIZE;
         __uvisor_stack_top__ = .;
+#ifndef ARCH_MPU_KINETIS
         . += STACK_GUARD_BAND;
+#endif
         __uvisor_stack_end__ = .;
     } > STACK_S
 

@@ -28,7 +28,7 @@
 #include "configurations.h"
 
 /* The K64F has 12 MPU regions, however, we use region 0 as the background
- * region with `UVISOR_TACL_BACKGROUND` as permissions.
+ * region with `UVISOR_TACL_DEBUGGER_BACKGROUND` as permissions.
  * Region 1 and 2 are used to unlock Application SRAM and Flash.
  * Therefore 9 MPU regions are available for user ACLs.
  * Region 3 and 4 are used to protect the current box stack and context.
@@ -397,7 +397,7 @@ void vmpu_mpu_lock(void)
     /* MPU background region permission mask
      *   this mask must be set as last one, since the background region gives no
      *   executable privileges to neither user nor supervisor modes */
-    MPU->RGDAAC[0] = UVISOR_TACL_BACKGROUND;
+    MPU->RGDAAC[0] = UVISOR_TACL_DEBUGGER_BACKGROUND;
 
     /* DSB & ISB to ensure subsequent data & instruction transfers are using updated MPU settings */
     __DSB();

@@ -73,10 +73,10 @@ void vmpu_mem_init(void)
 
     // describes the background region without the STACK_GUARD_BAND
     vmpu_mpu_set_static_acl(1, 0x00000000, (uint32_t) &__uvisor_stack_start_boundary__,
-        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_BACKGROUND);
+        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_CORE_BACKGROUND);
 
     vmpu_mpu_set_static_acl(2, (uint32_t) &__uvisor_stack_start__, 0xFFFFFFFF - ((uint32_t) &__uvisor_stack_start__),
-        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_BACKGROUND);
+        UVISOR_TACL_SREAD | UVISOR_TACL_SWRITE, UVISOR_TACL_CORE_BACKGROUND);
 
 
 
