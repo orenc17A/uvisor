@@ -73,8 +73,7 @@ void vmpu_mem_init(void)
         UVISOR_TACL_UREAD |
         UVISOR_TACL_UEXECUTE |
         UVISOR_TACL_USER,
-        MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_ENET, MPU_RGDn_WORD2_Mx_UM_R_SM_RWX) |
-        MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_DMA, MPU_RGDn_WORD2_Mx_UM_R_SM_RWX)
+        MPU_WORD_M2UM(0x04) | MPU_WORD_M3UM(0x04)
     );
 
     /* rest of SRAM, accessible to mbed
@@ -89,7 +88,6 @@ void vmpu_mem_init(void)
         UVISOR_TACL_UWRITE |
         UVISOR_TACL_UEXECUTE |
         UVISOR_TACL_USER,
-        MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_ENET, MPU_RGDn_WORD2_Mx_UM_RW_SM_RWX) |
-        MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_DMA, MPU_RGDn_WORD2_Mx_UM_RW_SM_RWX)
+        MPU_WORD_M2UM(0x06) | MPU_WORD_M3UM(0x06)
     );
 }

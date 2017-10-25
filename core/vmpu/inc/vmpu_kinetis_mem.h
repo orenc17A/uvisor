@@ -32,27 +32,6 @@
  *    | 5 | core       | NA         | -     |
  */
 
-
-// the following macros are serviceable only for MPU regions 0 - 3
-#define MPU_BUS_MASTER_CORE 0
-#define MPU_BUS_MASTER_DEBUGGER 1
-#define MPU_BUS_MASTER_DMA 2
-#define MPU_BUS_MASTER_ENET 3
-
-#define MPU_RGDn_WORD2_Mx_UM_R_SM_RWX       0x00000004U
-#define MPU_RGDn_WORD2_Mx_UM_RW_SM_RWX      0x00000006U
-#define MPU_RGDn_WORD2_Mx_UM_RWX_SM_RWX     0x00000007U
-#define MPU_RGDn_WORD2_Mx_UM_NONE_SM_RW     0x00000010U
-#define MPU_RGDn_WORD2_Mx_UM_NONE_SM_NONE   0x00000018U
-
-#define MPU_RGDn_WORD2_Mx(bus_master, perm) (perm << (bus_master * 6))
-
-#define UVISOR_TACL_CORE_BACKGROUND MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_CORE, MPU_RGDn_WORD2_Mx_UM_NONE_SM_RW)
-#define UVISOR_TACL_DEBUGGER_BACKGROUND ( \
-    MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_CORE, MPU_RGDn_WORD2_Mx_UM_NONE_SM_NONE) | \
-    MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_DEBUGGER, MPU_RGDn_WORD2_Mx_UM_RWX_SM_RWX) \
-)
-
 extern int vmpu_mem_add(uint8_t box_id, void* start, uint32_t size, UvisorBoxAcl acl);
 extern void vmpu_mem_switch(uint8_t src_box, uint8_t dst_box);
 extern uint32_t vmpu_fault_find_acl_mem(uint8_t box_id, uint32_t fault_addr, uint32_t size);

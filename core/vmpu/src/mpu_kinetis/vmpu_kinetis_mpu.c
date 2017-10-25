@@ -28,7 +28,7 @@
 #include "configurations.h"
 
 /* The K64F has 12 MPU regions, however, we use region 0 as the background
- * region for debugging purposes with `UVISOR_TACL_DEBUGGER_BACKGROUND` as permissions.
+ * region for debugging purposes only.
  * Regions 1 and 2 are used to create a stack guard for uVisor's own stack
  * Region 3 and 4 are used to unlock Application SRAM and Flash.
  * Therefore 7 MPU regions are available for user ACLs.
@@ -400,13 +400,13 @@ static void vmpu_mpu_set_background_region()
     mpu_region->STARTADDR = 0x00000000;
     // the region ends at __uvisor_stack_start_boundary__ not including
     mpu_region->ENDADDR = (((uint32_t) &__uvisor_stack_start_boundary__) - 1);
-    mpu_region->PERMISSIONS = UVISOR_TACL_CORE_BACKGROUND;
+    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x02));
     mpu_region->CONTROL = 1;
 
     mpu_region = (MPU_Region *) MPU->WORD[2];
     mpu_region->STARTADDR = ((uint32_t) &__uvisor_stack_start__);
     mpu_region->ENDADDR = 0xFFFFFFFF;
-    mpu_region->PERMISSIONS = UVISOR_TACL_CORE_BACKGROUND;
+    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x02));
     mpu_region->CONTROL = 1;
 }
 void vmpu_mpu_lock(void)
@@ -418,7 +418,7 @@ void vmpu_mpu_lock(void)
     /* MPU background region permission mask
      *   this mask must be set as last one, since the background region gives no
      *   executable privileges to neither user nor supervisor modes */
-    MPU->RGDAAC[0] = UVISOR_TACL_DEBUGGER_BACKGROUND;
+    MPU->RGDAAC[0] = MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x03) | MPU_WORD_M1UM(0x07) | MPU_WORD_M1SM(0x00);
 
     /* DSB & ISB to ensure subsequent data & instruction transfers are using updated MPU settings */
     __DSB();
