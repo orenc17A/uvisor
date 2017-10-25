@@ -198,6 +198,7 @@ SECTIONS
         . += STACK_GUARD_BAND;
 #endif
 #ifdef ARCH_MPU_KINETIS
+    /* Kinetis MPU regions must be 32 byte aligned. */
     . = ALIGN(32);
     __uvisor_stack_start_boundary__ = .;
     . += STACK_GUARD_BAND;
