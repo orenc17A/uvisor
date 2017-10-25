@@ -400,13 +400,13 @@ static void vmpu_mpu_set_background_region()
     mpu_region->STARTADDR = 0x00000000;
     // the region ends at __uvisor_stack_start_boundary__ not including
     mpu_region->ENDADDR = (((uint32_t) &__uvisor_stack_start_boundary__) - 1);
-    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x02));
+    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(MPU_RGDn_WORD2_MxUM_NONE) | MPU_WORD_M0SM(MPU_RGDn_WORD2_MxSM_RW));
     mpu_region->CONTROL = 1;
 
     mpu_region = (MPU_Region *) MPU->WORD[2];
     mpu_region->STARTADDR = ((uint32_t) &__uvisor_stack_start__);
     mpu_region->ENDADDR = 0xFFFFFFFF;
-    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x02));
+    mpu_region->PERMISSIONS = (MPU_WORD_M0UM(MPU_RGDn_WORD2_MxUM_NONE) | MPU_WORD_M0SM(MPU_RGDn_WORD2_MxSM_RW));
     mpu_region->CONTROL = 1;
 }
 void vmpu_mpu_lock(void)
@@ -418,7 +418,12 @@ void vmpu_mpu_lock(void)
     /* MPU background region permission mask
      *   this mask must be set as last one, since the background region gives no
      *   executable privileges to neither user nor supervisor modes */
-    MPU->RGDAAC[0] = MPU_WORD_M0UM(0x00) | MPU_WORD_M0SM(0x03) | MPU_WORD_M1UM(0x07) | MPU_WORD_M1SM(0x00);
+    MPU->RGDAAC[0] = MPU_WORD_M0UM(MPU_RGDn_WORD2_MxUM_NONE)  |
+        MPU_WORD_M0SM(MPU_RGDn_WORD2_MxSM_AS_UM)              |
+        MPU_WORD_M1UM(MPU_RGDn_WORD2_MxUM_READ |
+            MPU_RGDn_WORD2_MxUM_WRITE |
+            MPU_RGDn_WORD2_MxUM_EXECUTE)                      |
+        MPU_WORD_M1SM(MPU_RGDn_WORD2_MxSM_RWX);
 
     /* DSB & ISB to ensure subsequent data & instruction transfers are using updated MPU settings */
     __DSB();
