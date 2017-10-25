@@ -28,26 +28,27 @@
 #include "configurations.h"
 
 /* The K64F has 12 MPU regions, however, we use region 0 as the background
- * region with `UVISOR_TACL_DEBUGGER_BACKGROUND` as permissions.
- * Region 1 and 2 are used to unlock Application SRAM and Flash.
- * Therefore 9 MPU regions are available for user ACLs.
- * Region 3 and 4 are used to protect the current box stack and context.
- * This leaves 6 MPU regions for round robin scheduling:
+ * region for debugging purposes with `UVISOR_TACL_DEBUGGER_BACKGROUND` as permissions.
+ * Regions 1 and 2 are used to create a stack guard for uVisor's own stack
+ * Region 3 and 4 are used to unlock Application SRAM and Flash.
+ * Therefore 7 MPU regions are available for user ACLs.
+ * Region 5 and 6 are used to protect the current box stack and context.
+ * This leaves 5 MPU regions for round robin scheduling:
  *
  *     12      <-- End of MPU regions, K64F_MPU_REGIONS_MAX
  * .---------.
  * |   11    |
  * |   ...   |
- * |    8    | <-- Box Pages, K64F_MPU_REGIONS_USER
+ * |    7    | <-- Box Pages, K64F_MPU_REGIONS_USER
  * +---------+
- * |    7    | <-- Box Context
- * |    6    | <-- Box Stack, K64F_MPU_REGIONS_STATIC
+ * |    6    | <-- Box Context
+ * |    5    | <-- Box Stack, K64F_MPU_REGIONS_STATIC
  * +---------+
- * |    5    | <-- Application SRAM unlock
- * |    4    | <-- Application Flash unlock
- * |    3    | <-- Background region (stack start to 0xFFFFFFFF)
- * |    2    | <-- Background region (0 to stack guard)
- * |    1    | <-- Background region (for debugger)
+ * |    4    | <-- Application SRAM unlock
+ * |    3    | <-- Application Flash unlock
+ * |    2    | <-- Background region (stack start to 0xFFFFFFFF)
+ * |    1    | <-- Background region (0 to stack guard)
+ * |    0    | <-- Background region (for debugger)
  * '---------'
  */
 #define K64F_MPU_REGIONS_STATIC 5

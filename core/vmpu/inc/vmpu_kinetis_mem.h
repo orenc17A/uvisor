@@ -39,22 +39,19 @@
 #define MPU_BUS_MASTER_DMA 2
 #define MPU_BUS_MASTER_ENET 3
 
+#define MPU_RGDn_WORD2_Mx_UM_R_SM_RWX       0x00000004U
+#define MPU_RGDn_WORD2_Mx_UM_RW_SM_RWX      0x00000006U
+#define MPU_RGDn_WORD2_Mx_UM_RWX_SM_RWX     0x00000007U
 #define MPU_RGDn_WORD2_Mx_UM_NONE_SM_RW     0x00000010U
 #define MPU_RGDn_WORD2_Mx_UM_NONE_SM_NONE   0x00000018U
-#define MPU_RGDn_WORD2_Mx_UM_RWX_SM_RWX     0x00000007U
 
-#define MPU_RGDn_WORD2_Mx(bus_master, perm) ##if (bus_master >= 0 && bus_master <= 3) \
-    (perm << (bus_master * 6)) \
-##else \
-    ##error MPU_RGDn_WORD2_Mx can be used only with region 0 -3 \
-##endif
+#define MPU_RGDn_WORD2_Mx(bus_master, perm) (perm << (bus_master * 6))
 
+#define UVISOR_TACL_CORE_BACKGROUND MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_CORE, MPU_RGDn_WORD2_Mx_UM_NONE_SM_RW)
 #define UVISOR_TACL_DEBUGGER_BACKGROUND ( \
     MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_CORE, MPU_RGDn_WORD2_Mx_UM_NONE_SM_NONE) | \
     MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_DEBUGGER, MPU_RGDn_WORD2_Mx_UM_RWX_SM_RWX) \
 )
-
-#define UVISOR_TACL_CORE_BACKGROUND MPU_RGDn_WORD2_Mx(MPU_BUS_MASTER_CORE, MPU_RGDn_WORD2_Mx_UM_NONE_SM_RW)
 
 extern int vmpu_mem_add(uint8_t box_id, void* start, uint32_t size, UvisorBoxAcl acl);
 extern void vmpu_mem_switch(uint8_t src_box, uint8_t dst_box);
