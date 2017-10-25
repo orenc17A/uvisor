@@ -55,8 +55,9 @@ uint32_t vmpu_sys_mux_handler(uint32_t lr, uint32_t msp)
 {
     uint32_t pc;
     uint32_t fault_addr, fault_status;
-    // uint32_t *guard_region = ((uint32_t*)&__uvisor_stack_start_boundary__) + 4;
 
+    // this is an example code that causes hardfault by touching the stack guard
+    // uint32_t *guard_region = ((uint32_t*)&__uvisor_stack_start_boundary__) + 4;
     // *guard_region = 1;
 
     /* The IPSR enumerates interrupt numbers from 0 up, while *_IRQn numbers

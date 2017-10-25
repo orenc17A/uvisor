@@ -389,12 +389,15 @@ void vmpu_mpu_init(void)
                   (SCB_SHCSR_MEMFAULTENA_Msk);
 }
 
-void vmpu_mpu_set_background_region()
+
+// Creates the stack guard using MPU regions 1 & 2
+static void vmpu_mpu_set_background_region()
 {
     MPU_Region * mpu_region = NULL;
 
     mpu_region = (MPU_Region *) MPU->WORD[1];
     mpu_region->STARTADDR = 0x00000000;
+    // the region ends at __uvisor_stack_start_boundary__ not including
     mpu_region->ENDADDR = (((uint32_t) &__uvisor_stack_start_boundary__) - 1);
     mpu_region->PERMISSIONS = UVISOR_TACL_CORE_BACKGROUND;
     mpu_region->CONTROL = 1;
