@@ -88,7 +88,11 @@ ENTRY(main_entry)
  *       by the platform-specific configurations. */
 #define STACK_GUARD_BAND 32
 
+#ifdef ARCH_MPU_KINETIS
+#define STACK_SIZE (TOTAL_STACK_SIZE - STACK_GUARD_BAND - STACK_GUARD_BAND)
+#else
 #define STACK_SIZE (TOTAL_STACK_SIZE - STACK_GUARD_BAND)
+#endif
 
 #endif  /* ARCH_MPU_ARMv7M */
 
@@ -206,9 +210,7 @@ SECTIONS
         __uvisor_stack_start__ = .;
         . += STACK_SIZE;
         __uvisor_stack_top__ = .;
-#ifndef ARCH_MPU_KINETIS
         . += STACK_GUARD_BAND;
-#endif
         __uvisor_stack_end__ = .;
     } > STACK_S
 
